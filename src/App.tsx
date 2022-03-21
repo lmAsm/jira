@@ -1,11 +1,9 @@
 import React from 'react';
-
+import { ProjectList }  from './components/project-list';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        langmeng
-      </header>
+        <ProjectList/>
     </div>
   );
 }
