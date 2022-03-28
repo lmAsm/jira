@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import {List} from './list';
 import {SearchPanel} from "./search-panel";
 import qs from 'qs';
-import { cleanObject } from './util';
+import { cleanObject, useDebounce, useMount } from './util';
 const apiUrl = process.env.REACT_APP_API_URL;
 export const ProjectList = () => {
     const [param, setParam] = useState({
         name: '',
         personId: ''
     });
+    const debounceParam = useDebounce(param);
     const [users, setUsers] = useState([]);
     const [list, setList] = useState([]);
     useEffect(() => {
@@ -18,16 +19,16 @@ export const ProjectList = () => {
                 setList(await response.json());
             }
         });
-    }, [param]);
+    }, [debounceParam]);
 
-    useEffect(() => {
+    useMount(() => {
         console.log('useEffect222=== ', param);
         fetch(`${apiUrl}/users`).then(async response => {
             if (response.ok) {
                 setUsers(await response.json());
             }
         });
-    }, []);
+    });
     return (
         <React.Fragment>
             <SearchPanel param={param} setParam={setParam} users={users} setUsers={setUsers} />
